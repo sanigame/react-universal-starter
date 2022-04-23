@@ -62,6 +62,7 @@ exports.render = (routes) => {
         }
 
         const store = configureStore(initialState)
+        console.log('store.getState()', store.getState())
 
         /**
          * Convert JSX code to a HTML string that can be rendered server-side with
