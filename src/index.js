@@ -1,14 +1,30 @@
 import React from 'react'
 
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 
 import App from './App'
+import configureStore from './redux/configureStore'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
+const initialState = global.window && global.window.__INITIAL_STATE__
+const store = configureStore(initialState)
 const container = document.getElementById('root')
-const root = createRoot(container)
-root.render(<App />)
+
+console.log('initialState', initialState)
+
+const ssrRender = () => {
+  console.log('ssrRender')
+  hydrateRoot(container, <App store={store} />)
+}
+
+const clientRender = () => {
+  console.log('clientRender')
+  const root = createRoot(container)
+  root.render(<App store={store} />)
+}
+
+module.hot ? clientRender() : ssrRender()
 
 serviceWorkerRegistration.unregister()
 

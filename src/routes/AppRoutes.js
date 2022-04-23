@@ -3,8 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
 
-// import { redditListAction } from './features/reddit/redux'
-import { Home } from './pages'
+// import { redditListAction } from '../features/reddit/redux'
+import { Home } from '../pages'
 
 const AppRoutes = ({ store }) => {
   return (
