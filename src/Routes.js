@@ -3,8 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
 
-// import { redditListAction } from './features/reddit/redux'
 import { addTodo } from './actions'
+// import { redditListAction } from './features/reddit/redux'
 import { Home } from './pages'
 
 const AppRoutes = ({ store }) => {
@@ -17,7 +17,6 @@ const AppRoutes = ({ store }) => {
           if (store) {
             // store.dispatch(redditListAction.fetchRedditIfNeeded('all'))
             store.dispatch(addTodo('This should come renderer from server'))
-            console.log('store', store)
           }
           return <Home />
         }}

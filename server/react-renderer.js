@@ -2,12 +2,15 @@ import fs from 'fs'
 import path from 'path'
 
 import React from 'react'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import { renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
 
 import App from '../src/App'
 import configureStore from '../src/redux/configureStore'
+import { redditListAction } from '../src/features/reddit/redux'
 
 const initialState = {
   todos: [
@@ -39,7 +42,7 @@ exports.render = (routes) => {
        */
       const filePath = path.resolve(__dirname, '..', 'build', 'index.html')
 
-      fs.readFile(filePath, 'utf8', (err, htmlData) => {
+      fs.readFile(filePath, 'utf8', async (err, htmlData) => {
         if (err) {
           console.error('err', err)
           return res.status(404).end() // WARNING: This 404 will be handled by Express server and won't be your React 404 component.
@@ -62,6 +65,7 @@ exports.render = (routes) => {
         }
 
         const store = configureStore(initialState)
+        await store.dispatch(redditListAction.fetchRedditIfNeeded('all'))
         console.log('store.getState()', store.getState())
 
         /**
