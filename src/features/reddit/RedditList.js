@@ -13,11 +13,13 @@ const RedditList = () => {
   const { isFetching, value, error } = reddit
 
   useEffect(() => {
-    dispatch(redditListAction.fetchRedditIfNeeded(name))
+    if (value.length === 0) {
+      dispatch(redditListAction.fetchRedditIfNeeded(name))
+    }
     return () => {
       console.log('Unmount')
     }
-  }, [dispatch, name])
+  }, [dispatch, name, value])
 
   return (
     <div>

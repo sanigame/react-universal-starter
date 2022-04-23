@@ -66,7 +66,6 @@ exports.render = (routes) => {
 
         const store = configureStore(initialState)
         await store.dispatch(redditListAction.fetchRedditIfNeeded('all'))
-        console.log('store.getState()', store.getState())
 
         /**
          * Convert JSX code to a HTML string that can be rendered server-side with
