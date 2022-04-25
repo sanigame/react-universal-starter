@@ -9,8 +9,8 @@ import { renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
 
 import App from '../src/App'
-import configureStore from '../src/redux/configureStore'
 import { redditListAction } from '../src/features/reddit/redux'
+import configureStore from '../src/redux/configureStore'
 
 const initialState = {
   todos: [
