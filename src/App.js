@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 
-import AppRoutes from './Routes'
+import AppRoutes from './routes/index'
 import './styles/app.css'
 
 const App = ({ store, location }) => {
