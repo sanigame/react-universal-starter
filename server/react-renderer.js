@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import fs from 'fs'
 import path from 'path'
 
@@ -7,10 +8,11 @@ import 'regenerator-runtime/runtime'
 
 import { renderToString } from 'react-dom/server'
 import { matchPath } from 'react-router'
+import { matchRoutes } from 'react-router-config'
 
 import App from '../src/App'
-import { redditListAction } from '../src/features/reddit/redux'
 import configureStore from '../src/redux/configureStore'
+import routes from '../src/routes/routes'
 
 const initialState = {
   todos: [
@@ -22,14 +24,42 @@ const initialState = {
   ],
 }
 
-exports.render = (routes) => {
+// preload data for matched route
+const prefetchBranchData = (store, req) => {
+  try {
+    const branch = matchRoutes(routes, req.url)
+    const promises = branch.map(({ route, match }) => {
+      const { loadData } = route
+      const { dispatch } = store
+
+      console.log('match', match)
+      console.log('loadData', loadData)
+
+      if (match && match.isExact && loadData) {
+        if (Array.isArray(loadData)) {
+          return Promise.all(loadData.map((action) => dispatch(action())))
+        } else {
+          return dispatch(loadData())
+        }
+      }
+
+      return Promise.resolve(null)
+    })
+
+    return Promise.all(promises)
+  } catch (err) {
+    throw err
+  }
+}
+
+exports.render = () => {
   return (req, res, next) => {
     /**
      * Take routes collection and see if it's a valid app's route
      */
     var match = routes.find((route) =>
       matchPath(req.path, {
-        path: route,
+        path: route.path,
         exact: true,
       }),
     )
@@ -65,7 +95,7 @@ exports.render = (routes) => {
         }
 
         const store = configureStore(initialState)
-        await store.dispatch(redditListAction.fetchRedditIfNeeded('all'))
+        await prefetchBranchData(store, req)
 
         /**
          * Convert JSX code to a HTML string that can be rendered server-side with
