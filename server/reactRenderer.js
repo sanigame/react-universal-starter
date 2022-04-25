@@ -52,7 +52,7 @@ const prefetchBranchData = (store, req) => {
   }
 }
 
-exports.render = () => {
+const render = () => {
   return (req, res, next) => {
     /**
      * Take routes collection and see if it's a valid app's route
@@ -124,3 +124,5 @@ exports.render = () => {
     }
   }
 }
+
+export default render
