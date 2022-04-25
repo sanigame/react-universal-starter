@@ -1,29 +1,32 @@
 import types from './types'
-const initialState = {
-  isFetching: false,
-  value: [],
-  error: null,
-}
+const initialState = {}
 
-const reddit = (state = initialState, { type, payload }) => {
+const reddit = (state = initialState, { type, payload, name }) => {
   switch (type) {
     case types.FETCH_REDDIT_REQUEST:
       return {
         ...state,
-        isFetching: true,
-        error: null,
+        [name]: {
+          isFetching: true,
+          error: null,
+        },
       }
     case types.FETCH_REDDIT_SUCCESS:
       return {
         ...state,
-        isFetching: false,
-        value: payload.data.children,
+        [name]: {
+          isFetching: false,
+          // value: state.value.concat(payload.data.children),
+          value: payload.data.children,
+        },
       }
     case types.FETCH_REDDIT_FAILURE:
       return {
         ...state,
-        isFetching: false,
-        error: payload,
+        [name]: {
+          isFetching: false,
+          error: payload,
+        },
       }
     default:
       return state

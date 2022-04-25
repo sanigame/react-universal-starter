@@ -10,23 +10,18 @@ const RedditList = () => {
   const name = 'all'
   const dispatch = useDispatch()
   const reddit = useSelector((state) => state.reddit)
-  const { isFetching, value, error } = reddit
+  const redditList = reddit[name] || { isFetching: false }
+  const { isFetching, value, error } = redditList
 
   useEffect(() => {
-    if (value.length === 0) {
-      dispatch(redditListAction.fetchRedditIfNeeded(name))
-    }
-    return () => {
-      console.log('Unmount')
-    }
-  }, [dispatch, name, value])
+    dispatch(redditListAction.fetchRedditIfNeeded(name))
+    return () => {}
+  }, [dispatch, name])
 
   return (
     <div>
       {isFetching ? <p>loading</p> : null}
-      {value.map((topic, i) => (
-        <DetailItem key={i} title={topic.data.title} />
-      ))}
+      {value && value.map((topic, i) => <DetailItem key={i} title={topic.data.title} />)}
       {error ? <p>{error.message}</p> : null}
     </div>
   )

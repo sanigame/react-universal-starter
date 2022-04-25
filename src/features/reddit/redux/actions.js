@@ -8,9 +8,10 @@ const fetchRedditFailure = (error, name) => ({
   name,
 })
 
-const fetchRedditSuccess = (payload) => ({
+const fetchRedditSuccess = (payload, name) => ({
   type: types.FETCH_REDDIT_SUCCESS,
   payload,
+  name,
 })
 
 const fetchReddit =
@@ -20,7 +21,7 @@ const fetchReddit =
 
     try {
       const res = await axios.get(`https://www.reddit.com/r/${name}/hot.json`)
-      dispatch(fetchRedditSuccess(res.data))
+      dispatch(fetchRedditSuccess(res.data, name))
     } catch (error) {
       dispatch(fetchRedditFailure(error))
     }
