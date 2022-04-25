@@ -11,7 +11,18 @@ const routes = [
     path: '/server',
     exact: true,
     component: Home,
-    loadData: [redditListAction.fetchRedditIfNeeded],
+    loadData: [() => redditListAction.fetchRedditIfNeeded()],
+  },
+  {
+    path: '/server/:redditId',
+    exact: true,
+    component: Home,
+    loadData: [
+      ({ params }) => {
+        console.log('params', params)
+        return redditListAction.fetchRedditIfNeeded()
+      },
+    ],
   },
 ]
 
