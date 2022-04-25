@@ -2,8 +2,8 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
-import { StaticRouter } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
+import { StaticRouter } from 'react-router-dom/server'
 
 import AppRoutes from './routes/index'
 import './styles/app.css'
