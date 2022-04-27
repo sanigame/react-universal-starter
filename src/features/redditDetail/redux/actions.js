@@ -26,7 +26,6 @@ const fetchRedditDetail = (name) => async (dispatch) => {
 }
 
 const shouldFetchRedditDetail = (state, name) => {
-  console.log('shouldFetchRedditDetail')
   const content = state.redditDetail[name]
   if (!content || content.error) {
     return true

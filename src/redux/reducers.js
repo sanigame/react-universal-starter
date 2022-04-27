@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import { reducers as redditDetail } from '../features/redditDetail'
-import { reducers as redditList } from '../features/redditList'
+import { reducers as redditDetail } from '../features/redditDetail/redux'
+import { reducers as redditList } from '../features/redditList/redux'
 
 const rootReducer = combineReducers({ redditList, redditDetail })
 
