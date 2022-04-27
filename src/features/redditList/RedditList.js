@@ -21,7 +21,10 @@ const RedditList = () => {
   return (
     <div>
       {isFetching ? <p>loading</p> : null}
-      {value && value.map((topic, i) => <DetailItem key={i} title={topic.data.title} />)}
+      {value &&
+        value.map((topic, i) => (
+          <DetailItem key={i} title={topic.data.title} name={topic.data.name} />
+        ))}
       {error ? <p>{error.message}</p> : null}
     </div>
   )

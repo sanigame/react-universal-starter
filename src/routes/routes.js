@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { redditListAction } from '../features/redditList/redux'
-import { RedditListPage } from '../pages'
+import { RedditListPage, RedditDetailPage } from '../pages'
 
 const routes = [
   {
@@ -25,6 +25,11 @@ const routes = [
         return redditListAction.fetchRedditIfNeeded()
       },
     ],
+  },
+  {
+    path: '/detail/:name',
+    exact: true,
+    element: <RedditDetailPage />,
   },
 ]
 
