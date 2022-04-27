@@ -110,7 +110,10 @@ const render = () => {
         return res.end(
           htmlData
             .replace('<div id="root"></div>', `<div id="root">${reactDom}</div>`)
-            .replace('__REDUX__', JSON.stringify(store.getState())),
+            .replace(
+              'window.__INITIAL_STATE__={}',
+              `window.__INITIAL_STATE__=${JSON.stringify(store.getState())}`,
+            ),
         )
       })
     } else {
