@@ -1,32 +1,23 @@
 import React from 'react'
 
-import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { StaticRouter } from 'react-router-dom/server'
 
+import configureStore from './redux/configureStore'
 import AppRoutes from './routes/index'
 import './styles/app.css'
 
-const App = ({ store, location }) => {
+const initialState = global.window && global.window.__INITIAL_STATE__
+const store = configureStore(initialState)
+
+const App = () => {
   return (
     <Provider store={store}>
-      {location ? (
-        <StaticRouter location={location} context={{}}>
-          <AppRoutes store={store} />
-        </StaticRouter>
-      ) : (
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      )}
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </Provider>
   )
-}
-
-App.propTypes = {
-  location: PropTypes.any,
-  store: PropTypes.any,
 }
 
 export default App

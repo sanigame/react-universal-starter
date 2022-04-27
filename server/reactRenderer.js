@@ -7,22 +7,14 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import { renderToString } from 'react-dom/server'
+import { Provider } from 'react-redux'
 import { matchPath } from 'react-router'
 import { matchRoutes } from 'react-router-config'
+import { StaticRouter } from 'react-router-dom/server'
 
-import App from '../src/App'
 import configureStore from '../src/redux/configureStore'
+import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
-
-const initialState = {
-  todos: [
-    {
-      id: 0,
-      text: 'Task in initialState from server',
-      completed: false,
-    },
-  ],
-}
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
@@ -91,7 +83,7 @@ const render = () => {
           console.log(`SSR of ${req.path}`)
         }
 
-        const store = configureStore(initialState)
+        const store = configureStore({})
         await prefetchBranchData(store, req)
 
         /**
@@ -102,7 +94,13 @@ const render = () => {
          * rendered HTML and only attach event handlers.
          * (https://reactjs.org/docs/react-dom-server.html#rendertostring)
          */
-        const jsx = <App store={store} location={location} />
+        const jsx = (
+          <Provider store={store}>
+            <StaticRouter location={location} context={{}}>
+              <AppRoutes />
+            </StaticRouter>
+          </Provider>
+        )
         const reactDom = renderToString(jsx)
 
         /**
