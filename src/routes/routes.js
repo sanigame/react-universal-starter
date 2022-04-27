@@ -1,24 +1,24 @@
 import React from 'react'
 
-import { redditListAction } from '../features/reddit/redux'
-import { Home } from '../pages'
+import { redditListAction } from '../features/redditList/redux'
+import { RedditListPage } from '../pages'
 
 const routes = [
   {
     path: '/',
     exact: true,
-    element: <Home />,
+    element: <RedditListPage />,
   },
   {
     path: '/server',
     exact: true,
-    element: <Home />,
+    element: <RedditListPage />,
     loadData: [() => redditListAction.fetchRedditIfNeeded()],
   },
   {
     path: '/server/:redditId',
     exact: true,
-    element: <Home />,
+    element: <RedditListPage />,
     loadData: [
       ({ params }) => {
         console.log('params', params)

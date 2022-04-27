@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import { reducers as reddit } from '../features/reddit'
+import { reducers as redditList } from '../features/redditList'
 
-const rootReducer = combineReducers({ reddit })
+const rootReducer = combineReducers({ redditList })
 
 export default rootReducer

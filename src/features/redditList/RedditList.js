@@ -9,7 +9,7 @@ import { redditListAction } from './redux'
 const RedditList = () => {
   const name = 'all'
   const dispatch = useDispatch()
-  const reddit = useSelector((state) => state.reddit)
+  const reddit = useSelector((state) => state.redditList)
   const redditList = reddit[name] || { isFetching: false }
   const { isFetching, value, error } = redditList
 

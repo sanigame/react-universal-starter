@@ -28,7 +28,7 @@ const fetchReddit =
   }
 
 const shouldFetchReddit = (state, name) => {
-  const reddit = state.reddit[name]
+  const reddit = state.redditList[name]
   if (!reddit || reddit.error) {
     return true
   }
