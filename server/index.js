@@ -4,7 +4,7 @@ import express from 'express'
 
 import render from './reactRenderer'
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 /**
  * initialize the application and create the routes

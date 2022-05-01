@@ -2,6 +2,8 @@ import axios from 'axios'
 
 import types from './types'
 
+const REDDIT_API = process.env.REDDIT_API
+
 const fetchRedditDetailFailure = (error, name) => ({
   type: types.FETCH_REDDIT_DETAIL_FAILURE,
   payload: error.message,
@@ -18,7 +20,7 @@ const fetchRedditDetail = (name) => async (dispatch) => {
   dispatch({ type: types.FETCH_REDDIT_DETAIL_REQUEST, name })
 
   try {
-    const res = await axios.get(`https://www.reddit.com/by_id/${name}.json`)
+    const res = await axios.get(`${REDDIT_API}/by_id/${name}.json`)
     dispatch(fetchRedditDetailSuccess(res.data, name))
   } catch (error) {
     dispatch(fetchRedditDetailFailure(error))

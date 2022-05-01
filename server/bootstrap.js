@@ -1,9 +1,9 @@
 require('ignore-styles')
+require('dotenv').config()
 
 require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
-    //"@babel/plugin-transform-modules-commonjs",
     [
       'transform-assets',
       {
