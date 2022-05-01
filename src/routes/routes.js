@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { lazy } from 'react'
 
-import { redditDetailAction } from '../features/redditDetail'
+import { redditDetailAction } from '../features/redditDetail/redux'
 import { redditListAction } from '../features/redditList/redux'
-import { RedditListPage, RedditDetailPage } from '../pages'
+
+const RedditListPage = lazy(() => import('../pages/RedditListPage'))
+const RedditDetailPage = lazy(() => import('../pages/RedditDetailPage'))
 
 const routes = [
   {
