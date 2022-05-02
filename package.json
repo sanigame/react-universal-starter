@@ -1,7 +1,9 @@
 {
   "name": "react-universal-starter",
   "version": "0.1.0",
-  "private": true,
+  "description": "Universal React web app boilerplate.",
+  "author": "Supasan Suklim (supasan.game@gmail.com)",
+  "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
@@ -81,5 +83,16 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanigame/react-universal-starter.git"
+  },
+  "keywords": [
+    "isomorphic",
+    "universal",
+    "ssr",
+    "express",
+    "react"
+  ]
 }

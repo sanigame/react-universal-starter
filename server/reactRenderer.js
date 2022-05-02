@@ -46,7 +46,7 @@ const render = () => {
     /**
      * Take routes collection and see if it's a valid app's route
      */
-    var match = routes.find((route) =>
+    const match = routes.find((route) =>
       matchPath(req.path, {
         path: route.path,
         exact: true,
