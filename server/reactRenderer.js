@@ -6,6 +6,9 @@ import React from 'react'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
+import { CacheProvider } from '@emotion/react'
+import createEmotionServer from '@emotion/server/create-instance'
+import { ThemeProvider } from '@mui/material/styles'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { matchPath } from 'react-router'
@@ -15,6 +18,9 @@ import { StaticRouter } from 'react-router-dom/server'
 import configureStore from '../src/redux/configureStore'
 import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
+import theme from '../src/theme/theme'
+
+import createEmotionCache from './createEmotionCache'
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
@@ -86,6 +92,9 @@ const render = () => {
         const store = configureStore({})
         await prefetchBranchData(store, req)
 
+        const cache = createEmotionCache()
+        const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache)
+
         /**
          * Convert JSX code to a HTML string that can be rendered server-side with
          * `renderToString` a method provided by ReactDOMServer
@@ -96,12 +105,19 @@ const render = () => {
          */
         const jsx = (
           <Provider store={store}>
-            <StaticRouter location={location} context={{}}>
-              <AppRoutes />
-            </StaticRouter>
+            <CacheProvider value={cache}>
+              <ThemeProvider theme={theme()}>
+                <StaticRouter location={location} context={{}}>
+                  <AppRoutes />
+                </StaticRouter>
+              </ThemeProvider>
+            </CacheProvider>
           </Provider>
         )
         const reactDom = renderToString(jsx)
+        // Grab the CSS from emotion
+        const emotionChunks = extractCriticalToChunks(reactDom)
+        const emotionCss = constructStyleTagsFromChunks(emotionChunks)
 
         /**
          * inject the rendered app and it state
@@ -113,7 +129,8 @@ const render = () => {
             .replace(
               'window.__INITIAL_STATE__={}',
               `window.__INITIAL_STATE__=${JSON.stringify(store.getState())}`,
-            ),
+            )
+            .replace('<style emotion-css></style>', emotionCss),
         )
       })
     } else {
