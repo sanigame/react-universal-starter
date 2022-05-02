@@ -15,12 +15,11 @@ import { matchPath } from 'react-router'
 import { matchRoutes } from 'react-router-config'
 import { StaticRouter } from 'react-router-dom/server'
 
+import createEmotionCache from '../src/createEmotionCache'
 import configureStore from '../src/redux/configureStore'
 import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
 import theme from '../src/theme/theme'
-
-import createEmotionCache from './createEmotionCache'
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
