@@ -1,14 +1,23 @@
 import React from 'react'
 
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 const container = document.getElementById('root')
-const root = createRoot(container)
-root.render(<App />)
+
+const ssrRender = () => {
+  hydrateRoot(container, <App />)
+}
+
+const clientRender = () => {
+  const root = createRoot(container)
+  root.render(<App />)
+}
+
+module.hot ? clientRender() : ssrRender()
 
 serviceWorkerRegistration.unregister()
 

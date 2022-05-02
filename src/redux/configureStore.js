@@ -11,7 +11,7 @@ import reducers from './reducers'
 export default function configureStore(initialState = {}) {
   let middlewares = applyMiddleware(thunk)
 
-  if (process.env.NODE_ENV !== 'production') middlewares = composeWithDevTools(middlewares)
+  middlewares = composeWithDevTools(middlewares)
 
   const store = createStore(reducers, initialState, middlewares)
 

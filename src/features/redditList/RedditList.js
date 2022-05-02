@@ -9,22 +9,22 @@ import { redditListAction } from './redux'
 const RedditList = () => {
   const name = 'all'
   const dispatch = useDispatch()
-  const reddit = useSelector((state) => state.reddit)
-  const { isFetching, value, error } = reddit
+  const reddit = useSelector((state) => state.redditList)
+  const redditList = reddit[name] || { isFetching: false }
+  const { isFetching, value, error } = redditList
 
   useEffect(() => {
     dispatch(redditListAction.fetchRedditIfNeeded(name))
-    return () => {
-      console.log('Unmount')
-    }
+    return () => {}
   }, [dispatch, name])
 
   return (
     <div>
       {isFetching ? <p>loading</p> : null}
-      {value.map((topic, i) => (
-        <DetailItem key={i} title={topic.data.title} />
-      ))}
+      {value &&
+        value.map((topic, i) => (
+          <DetailItem key={i} title={topic.data.title} name={topic.data.name} />
+        ))}
       {error ? <p>{error.message}</p> : null}
     </div>
   )

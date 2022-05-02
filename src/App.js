@@ -1,17 +1,21 @@
 import React from 'react'
 
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 
 import configureStore from './redux/configureStore'
-import Routes from './Routes'
+import AppRoutes from './routes/index'
 import './styles/app.css'
 
-const store = configureStore()
+const initialState = global.window && global.window.__INITIAL_STATE__
+const store = configureStore(initialState)
 
-function App() {
+const App = () => {
   return (
     <Provider store={store}>
-      <Routes />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </Provider>
   )
 }
