@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -11,11 +11,7 @@ const renderRoutes = (routeList) => {
 }
 
 const AppRoutes = () => {
-  return (
-    <Suspense fallback={<div>loading...</div>}>
-      <Routes>{renderRoutes(routes)}</Routes>
-    </Suspense>
-  )
+  return <Routes>{renderRoutes(routes)}</Routes>
 }
 
 export default AppRoutes
