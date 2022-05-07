@@ -9,7 +9,7 @@ import PageContainer from './PageContainer'
 const RedditDetailPage = () => {
   const { name } = useParams()
   return (
-    <PageContainer title={`${name} detail`}>
+    <PageContainer title={`${name} detail`} description="detail data">
       <RedditDetail name={name} />
     </PageContainer>
   )
