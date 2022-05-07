@@ -12,6 +12,7 @@ const PageContainer = ({ title, description, children }) => {
     <>
       <Helmet
         title={title}
+        description={description}
         meta={[
           { property: 'og:title', content: meta.ogTitle },
           { property: 'og:description', content: meta.ogDescription },
