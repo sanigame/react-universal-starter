@@ -4,9 +4,15 @@ import { useParams } from 'react-router-dom'
 
 import { RedditDetail } from '../features/redditDetail'
 
+import PageContainer from './PageContainer'
+
 const RedditDetailPage = () => {
   const { name } = useParams()
-  return <RedditDetail name={name} />
+  return (
+    <PageContainer title={`${name} detail`}>
+      <RedditDetail name={name} />
+    </PageContainer>
+  )
 }
 
 export default RedditDetailPage
