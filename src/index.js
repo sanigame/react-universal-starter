@@ -5,6 +5,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import 'typeface-roboto'
 
 const container = document.getElementById('root')
 
