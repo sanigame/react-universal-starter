@@ -47,7 +47,7 @@ const prefetchBranchData = (store, req) => {
   }
 }
 
-const updateHtmlContent = (app, preloadedState, helmet) => {
+const updateHtmlContent = (app, preloadedState, css, helmet) => {
   return `
     <!DOCTYPE html>
     <html ${helmet.htmlAttributes.toString()}>
@@ -60,6 +60,7 @@ const updateHtmlContent = (app, preloadedState, helmet) => {
         ${helmet.meta.toString()}
         ${helmet.title.toString()}
         ${helmet.link.toString()}
+        ${css}
       </head>
       <body>
         <div id="root">${app}</div>
@@ -151,7 +152,7 @@ const render = () => {
           '<div id="root"></div>',
           `<div id="root">${reactDom}</div>`,
         )
-        return res.end(updateHtmlContent(updated, preloadedState, helmet))
+        return res.end(updateHtmlContent(updated, preloadedState, emotionCss, helmet))
       })
     } else {
       req._possible404 = true
