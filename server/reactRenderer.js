@@ -7,6 +7,7 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import { renderToString } from 'react-dom/server'
+import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
 import { matchPath } from 'react-router'
 import { matchRoutes } from 'react-router-config'
@@ -39,6 +40,28 @@ const prefetchBranchData = (store, req) => {
   } catch (err) {
     throw err
   }
+}
+
+const updateHtmlContent = (app, preloadedState, helmet) => {
+  return `
+    <!DOCTYPE html>
+    <html ${helmet.htmlAttributes.toString()}>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="apple-touch-icon" href="/logo192.png" />
+        <link rel="manifest" href="/manifest.json" />
+        ${helmet.meta.toString()}
+        ${helmet.title.toString()}
+        ${helmet.link.toString()}
+      </head>
+      <body>
+        <div id="root">${app}</div>
+        <script>window.__INITIAL_STATE__ = ${preloadedState}</script>
+      </body>
+    </html>
+  `
 }
 
 const render = () => {
@@ -102,19 +125,18 @@ const render = () => {
           </Provider>
         )
         const reactDom = renderToString(jsx)
+        const preloadedState = JSON.stringify(store.getState())
+        const helmet = Helmet.renderStatic()
 
         /**
          * inject the rendered app and it state
          * into our html and send it
          */
-        return res.end(
-          htmlData
-            .replace('<div id="root"></div>', `<div id="root">${reactDom}</div>`)
-            .replace(
-              'window.__INITIAL_STATE__={}',
-              `window.__INITIAL_STATE__=${JSON.stringify(store.getState())}`,
-            ),
+        const updated = htmlData.replace(
+          '<div id="root"></div>',
+          `<div id="root">${reactDom}</div>`,
         )
+        return res.end(updateHtmlContent(updated, preloadedState, helmet))
       })
     } else {
       req._possible404 = true

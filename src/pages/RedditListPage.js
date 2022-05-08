@@ -2,11 +2,13 @@ import React from 'react'
 
 import { RedditList } from '../features/redditList'
 
+import PageContainer from './PageContainer'
+
 const RedditListPage = () => {
   return (
-    <div>
+    <PageContainer title="Reddit list" description="List of reddit">
       <RedditList />
-    </div>
+    </PageContainer>
   )
 }
 
