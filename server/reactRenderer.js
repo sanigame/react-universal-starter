@@ -137,14 +137,6 @@ const render = () => {
           `<div id="root">${reactDom}</div>`,
         )
         return res.end(updateHtmlContent(updated, preloadedState, helmet))
-        // return res.end(
-        //   htmlData
-        //     .replace('<div id="root"></div>', `<div id="root">${reactDom}</div>`)
-        //     .replace(
-        //       'window.__INITIAL_STATE__={}',
-        //       `window.__INITIAL_STATE__=${JSON.stringify(store.getState())}`,
-        //     ),
-        // )
       })
     } else {
       req._possible404 = true
