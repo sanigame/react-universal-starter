@@ -9,13 +9,14 @@ import 'regenerator-runtime/runtime'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
-import { matchPath } from 'react-router'
 import { matchRoutes } from 'react-router-config'
 import { StaticRouter } from 'react-router-dom/server'
 
 import configureStore from '../src/redux/configureStore'
 import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
+
+import matchPath from './matchPath'
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
