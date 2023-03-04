@@ -26,7 +26,7 @@ const prefetchBranchData = (store, req) => {
       const { loadData } = route
       const { dispatch } = store
 
-      if (match && match.isExact && loadData) {
+      if (match && loadData) {
         if (Array.isArray(loadData)) {
           return Promise.all(loadData.map((action) => dispatch(action(match, req))))
         } else {

@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "source_map=false GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "server": "yarn build && NODE_ENV=production node server/bootstrap.js",
