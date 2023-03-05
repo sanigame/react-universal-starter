@@ -16,7 +16,7 @@ import { StaticRouter } from 'react-router-dom/server'
 
 import createEmotionCache from '../src/createEmotionCache'
 import configureStore from '../src/redux/configureStore'
-import AppRoutes from '../src/routes/index'
+import AppRoutes from '../src/routes'
 import routes from '../src/routes/routes'
 import theme from '../src/theme/theme'
 
@@ -48,7 +48,7 @@ const prefetchBranchData = (store, req) => {
   }
 }
 
-const updateHtmlContent = (app, preloadedState, css, helmet) => {
+const updateHtmlContent = (app, preloadedState, helmet, scriptString, css) => {
   return `
     <!DOCTYPE html>
     <html ${helmet.htmlAttributes.toString()}>
@@ -61,6 +61,7 @@ const updateHtmlContent = (app, preloadedState, css, helmet) => {
         ${helmet.meta.toString()}
         ${helmet.title.toString()}
         ${helmet.link.toString()}
+        ${scriptString}
         ${css}
       </head>
       <body>
@@ -150,11 +151,9 @@ const render = () => {
          * inject the rendered app and it state
          * into our html and send it
          */
-        const updated = htmlData.replace(
-          '<div id="root"></div>',
-          `<div id="root">${reactDom}</div>`,
+        return res.end(
+          updateHtmlContent(reactDom, preloadedState, helmet, scriptString, emotionCss),
         )
-        return res.end(updateHtmlContent(updated, preloadedState, emotionCss, helmet))
       })
     } else {
       req._possible404 = true
