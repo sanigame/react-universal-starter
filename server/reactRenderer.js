@@ -9,13 +9,14 @@ import 'regenerator-runtime/runtime'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
-import { matchPath } from 'react-router'
-import { matchRoutes } from 'react-router-config'
 import { StaticRouter } from 'react-router-dom/server'
 
 import configureStore from '../src/redux/configureStore'
 import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
+
+import matchPath from './matchPath'
+import matchRoutes from './matchRoutes'
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
@@ -25,7 +26,7 @@ const prefetchBranchData = (store, req) => {
       const { loadData } = route
       const { dispatch } = store
 
-      if (match && match.isExact && loadData) {
+      if (match && loadData) {
         if (Array.isArray(loadData)) {
           return Promise.all(loadData.map((action) => dispatch(action(match, req))))
         } else {
@@ -42,7 +43,7 @@ const prefetchBranchData = (store, req) => {
   }
 }
 
-const updateHtmlContent = (app, preloadedState, helmet) => {
+const updateHtmlContent = (app, preloadedState, helmet, scriptString) => {
   return `
     <!DOCTYPE html>
     <html ${helmet.htmlAttributes.toString()}>
@@ -55,6 +56,7 @@ const updateHtmlContent = (app, preloadedState, helmet) => {
         ${helmet.meta.toString()}
         ${helmet.title.toString()}
         ${helmet.link.toString()}
+        ${scriptString}
       </head>
       <body>
         <div id="root">${app}</div>
@@ -127,16 +129,13 @@ const render = () => {
         const reactDom = renderToString(jsx)
         const preloadedState = JSON.stringify(store.getState())
         const helmet = Helmet.renderStatic()
+        const scriptString = htmlData.split('</title>').pop().split('</head>')[0]
 
         /**
          * inject the rendered app and it state
          * into our html and send it
          */
-        const updated = htmlData.replace(
-          '<div id="root"></div>',
-          `<div id="root">${reactDom}</div>`,
-        )
-        return res.end(updateHtmlContent(updated, preloadedState, helmet))
+        return res.end(updateHtmlContent(reactDom, preloadedState, helmet, scriptString))
       })
     } else {
       req._possible404 = true
