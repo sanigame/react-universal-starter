@@ -12,8 +12,6 @@ import { ThemeProvider } from '@mui/material/styles'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
-import { matchPath } from 'react-router'
-import { matchRoutes } from 'react-router-config'
 import { StaticRouter } from 'react-router-dom/server'
 
 import createEmotionCache from '../src/createEmotionCache'
@@ -21,6 +19,9 @@ import configureStore from '../src/redux/configureStore'
 import AppRoutes from '../src/routes/index'
 import routes from '../src/routes/routes'
 import theme from '../src/theme/theme'
+
+import matchPath from './matchPath'
+import matchRoutes from './matchRoutes'
 
 // preload data for matched route
 const prefetchBranchData = (store, req) => {
@@ -30,7 +31,7 @@ const prefetchBranchData = (store, req) => {
       const { loadData } = route
       const { dispatch } = store
 
-      if (match && match.isExact && loadData) {
+      if (match && loadData) {
         if (Array.isArray(loadData)) {
           return Promise.all(loadData.map((action) => dispatch(action(match, req))))
         } else {
@@ -143,6 +144,7 @@ const render = () => {
         const emotionCss = constructStyleTagsFromChunks(emotionChunks)
         const preloadedState = JSON.stringify(store.getState())
         const helmet = Helmet.renderStatic()
+        const scriptString = htmlData.split('</title>').pop().split('</head>')[0]
 
         /**
          * inject the rendered app and it state
